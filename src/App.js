@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
+import React, { useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import Sidebar from "./components/sidebar";
+import Libros from "./components/LibrosUI";
+import AutoresUI from "./components/AutoresUI";
+import "./css/new_stryles.css";
 
 function App() {
+  const [vista, setVista] = useState("libros");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app-gradient-background">
+      <Container fluid>
+        <Row>
+          <Col xs={12} md={3} lg={2} className="p-0">
+            <Sidebar cambiarVista={setVista} vistaActual={vista} />
+          </Col>
+          <Col xs={12} md={9} lg={10}>
+            <div className="py-4 px-3">
+              {vista === "libros" && <Libros />}
+              {vista === "autores" && <AutoresUI />}
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }
