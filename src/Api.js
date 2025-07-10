@@ -3,6 +3,10 @@ const API_AUTORES = "https://www.posterik.somee.com/api/Autor";
 //https://microservicio-libros.onrender.com/api/LibroMaterial
 //LIBROS:
 
+const cors = require('cors');
+app.use(cors());
+
+
 export async function obtenerLibros() {
   const res = await fetch(API_URL);
   if (!res.ok) throw new Error(`Error al obtener libros: ${res.statusText}`);
