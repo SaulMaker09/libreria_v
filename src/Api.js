@@ -2,9 +2,7 @@ const API_URL = "https://microservicio-libros.onrender.com/api/LibroMaterial";
 const API_AUTORES = "https://www.posterik.somee.com/api/Autor";
 //https://microservicio-libros.onrender.com/api/LibroMaterial
 //LIBROS:
-
-const cors = require('cors');
-app.use(cors());
+  
 
 
 export async function obtenerLibros() {
