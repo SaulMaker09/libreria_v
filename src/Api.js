@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8093/api/LibroMaterial";
+const API_URL = "https://microservicio-libros.onrender.com//api/LibroMaterial";
 const API_AUTORES = "https://www.posterik.somee.com/api/Autor";
 //https://microservicio-libros.onrender.com/api/LibroMaterial
 //LIBROS:
