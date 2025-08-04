@@ -18,10 +18,14 @@ const refreshToken = async () => {
 
   const data = await response.json();
   localStorage.setItem('token', data.token);
-  // Si también llega un nuevo refresh token, descomenta:
-  // localStorage.setItem('refreshToken', data.refreshToken);
+
+  if (data.refreshToken) {
+    localStorage.setItem('refreshToken', data.refreshToken);
+  }
+
   return data.token;
 };
+
 
 export const fetchWithAuth = async (url, options = {}) => {
   const headers = {
