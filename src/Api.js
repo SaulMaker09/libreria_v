@@ -1,67 +1,68 @@
-const API_URL = "https://microservicio-libros.onrender.com/api/LibroMaterial";
-const API_AUTORES = "https://www.posterik.somee.com/api/Autor";
-//https://microservicio-libros.onrender.com/api/LibroMaterial
-//LIBROS:
-  
+import { fetchWithAuth } from './utils/fetchWithAuth.js';
 
+const API_URL = 'https://eriklibreria.somee.com/api/LibroMaterial';
+const API_AUTORES = 'https://erikrem.somee.com/api/Autor';
+
+// 📚 LIBROS
 
 export async function obtenerLibros() {
-  const res = await fetch(API_URL);
+  const res = await fetchWithAuth(API_URL);
   if (!res.ok) throw new Error(`Error al obtener libros: ${res.statusText}`);
   return res.json();
 }
 
 export async function obtenerLibroPorId(id) {
-  const res = await fetch(`${API_URL}/${id}`);
+  const res = await fetchWithAuth(`${API_URL}/${id}`);
   if (!res.ok) throw new Error(`Error al obtener libro ${id}: ${res.statusText}`);
   return res.json();
 }
 
 export async function crearLibro(data) {
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const res = await fetchWithAuth(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error(`Error al crear libro: ${res.statusText}`);
-  return res.json(); // Asumo que la API devuelve el libro creado
+  return res.json();
 }
 
 export async function actualizarLibro(id, data) {
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+  const res = await fetchWithAuth(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error(`Error al actualizar libro: ${res.statusText}`);
-  return res.json(); // Asumo que la API devuelve el libro actualizado
+  return res.json();
 }
 
 export async function eliminarLibro(id) {
-  const res = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
+  const res = await fetchWithAuth(`${API_URL}/${id}`, {
+    method: 'DELETE',
   });
   if (!res.ok) throw new Error(`Error al eliminar libro: ${res.statusText}`);
-  return true; // O puedes devolver algo más si la API responde
+  return true;
 }
 
-//AUTOR:
+// 👤 AUTORES
+
 export async function obtenerAutores() {
-  const res = await fetch(API_AUTORES);
+  const res = await fetchWithAuth(API_AUTORES);
   if (!res.ok) throw new Error(`Error al obtener autores: ${res.statusText}`);
   return res.json();
 }
 
 export async function obtenerAutorPorId(id) {
-  const res = await fetch(`${API_AUTORES}/${id}`);
+  const res = await fetchWithAuth(`${API_AUTORES}/${id}`);
   if (!res.ok) throw new Error(`Error al obtener autor ${id}: ${res.statusText}`);
   return res.json();
 }
 
 export async function crearAutor(data) {
-  const res = await fetch(API_AUTORES, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  const res = await fetchWithAuth(API_AUTORES, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
   if (!res.ok) throw new Error(`Error al crear autor: ${res.statusText}`);
@@ -69,34 +70,28 @@ export async function crearAutor(data) {
 }
 
 export const actualizarAutor = async (id, datosAutor) => {
-  // Asegura que el id y el AutorGuid en el cuerpo coinciden
   if (!datosAutor.autorGuid) {
     datosAutor.autorGuid = id;
   }
 
-  const resp = await fetch(`${API_AUTORES}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
+  const res = await fetchWithAuth(`${API_AUTORES}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(datosAutor),
   });
-  if (!resp.ok) throw new Error("Error al actualizar autor");
-  return resp.json();
+  if (!res.ok) throw new Error('Error al actualizar autor');
+  return res.json();
 };
 
-// Agrega esta función en Api.js
 export const buscarAutorPorNombre = async (nombre) => {
-  const response = await fetch(`${API_AUTORES}/${nombre}`);
-  if (!response.ok) {
-    throw new Error("Error al buscar autor por nombre");
-  }
-  return await response.json();
+  const res = await fetchWithAuth(`${API_AUTORES}/${nombre}`);
+  if (!res.ok) throw new Error('Error al buscar autor por nombre');
+  return res.json();
 };
-
-
 
 export async function eliminarAutor(id) {
-  const res = await fetch(`${API_AUTORES}/${id}`, {
-    method: "DELETE",
+  const res = await fetchWithAuth(`${API_AUTORES}/${id}`, {
+    method: 'DELETE',
   });
   if (!res.ok) throw new Error(`Error al eliminar autor: ${res.statusText}`);
   return true;

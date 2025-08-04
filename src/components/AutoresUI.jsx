@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Alert, InputGroup, Form } from "react-bootstrap";
+import { Button, Modal, Alert, InputGroup, Form, Container, Row, Col, Spinner } from "react-bootstrap";
 import { obtenerAutores, crearAutor, actualizarAutor, eliminarAutor } from "../Api";
 import AutorList from "../components/AutorList";
 import AutorForm from "../components/AutorForm";
 import { FaPlus, FaSearch } from "react-icons/fa";
 
-const AutoresUI = () => {
+const AutoresUI = ({ cerrarSesion, irDashboard }) => {
   const [autores, setAutores] = useState([]);
   const [autorEditando, setAutorEditando] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
@@ -67,44 +67,76 @@ const AutoresUI = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-white text-center mb-4">🧑‍🏫 Autores</h1>
+    <Container fluid style={{ minHeight: "100vh", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", padding: "40px 20px" }}>
+      <Row className="justify-content-between align-items-center mb-4">
+        <Col xs="auto" className="text-white fw-bold" style={{ textShadow: "1px 1px 5px rgba(0,0,0,0.4)", fontSize: '2rem' }}>
+          🧑‍🏫 Autores
+        </Col>
+        <Col xs="auto" className="d-flex gap-2">
+          <Button variant="light" className="fw-semibold shadow" onClick={irDashboard}>
+            Volver al Dashboard
+          </Button>
+          <Button variant="danger" className="fw-semibold shadow" onClick={cerrarSesion}>
+            Cerrar sesión
+          </Button>
+        </Col>
+      </Row>
 
-      {error && <Alert variant="danger" className="fade-in">{error}</Alert>}
+      {error && (
+        <Row className="justify-content-center mb-3">
+          <Col xs={12} md={8}>
+            <Alert variant="danger" className="shadow">{error}</Alert>
+          </Col>
+        </Row>
+      )}
 
-      <InputGroup className="mb-3 input-group-animated">
-        <Form.Control
-          placeholder="Buscar autor por nombre..."
-          value={busqueda}
-          onChange={(e) => setBusqueda(e.target.value)}
-          className="input-search"
-        />
-        <Button variant="secondary" className="btn-search" onClick={() => {}}>
-          <FaSearch />
-        </Button>
-      </InputGroup>
+      <Row className="justify-content-center mb-3">
+        <Col xs={12} md={8}>
+          <InputGroup>
+            <Form.Control
+              placeholder="Buscar autor por nombre..."
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              style={{ borderRadius: "0.375rem 0 0 0.375rem" }}
+            />
+            <Button variant="light" style={{ borderRadius: "0 0.375rem 0.375rem 0" }}>
+              <FaSearch />
+            </Button>
+          </InputGroup>
+        </Col>
+      </Row>
 
-      <div className="text-center mb-3">
-        <Button className="nuevo-libro-boton btn-animated" onClick={handleNuevo}>
-          <FaPlus className="me-2" /> Nuevo Autor
-        </Button>
-      </div>
+      <Row className="justify-content-center mb-4">
+        <Col xs={12} md={8} className="d-flex justify-content-end">
+          <Button variant="light" className="fw-semibold shadow" onClick={handleNuevo}>
+            <FaPlus className="me-2" />
+            Nuevo Autor
+          </Button>
+        </Col>
+      </Row>
 
-      <AutorList
-        autores={autores.filter(autor =>
-          autor.nombre.toLowerCase().includes(busqueda.toLowerCase())
-        )}
-        onEdit={handleEditar}
-        onDelete={handleEliminar}
-        loading={loading}
-        className="autor-list-animated"
-      />
+      <Row className="justify-content-center">
+        <Col xs={12} md={8}>
+          {loading ? (
+            <div className="d-flex justify-content-center py-5">
+              <Spinner animation="border" variant="light" />
+            </div>
+          ) : (
+            <AutorList
+              autores={autores.filter((autor) => autor.nombre.toLowerCase().includes(busqueda.toLowerCase()))}
+              onEdit={handleEditar}
+              onDelete={handleEliminar}
+            />
+          )}
+        </Col>
+      </Row>
 
       <Modal
         show={mostrarModal}
         onHide={() => setMostrarModal(false)}
         centered
         dialogClassName="modal-animated"
+        contentClassName="bg-light shadow rounded"
       >
         <Modal.Header closeButton>
           <Modal.Title>{autorEditando ? "Editar Autor" : "Nuevo Autor"}</Modal.Title>
@@ -117,7 +149,7 @@ const AutoresUI = () => {
           />
         </Modal.Body>
       </Modal>
-    </div>
+    </Container>
   );
 };
 
